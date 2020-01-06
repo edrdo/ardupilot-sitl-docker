@@ -18,5 +18,5 @@ docker run --rm -it \
   -v $SCRIPTS_DIR:/external \
   -e "SIM_OPTIONS=--out=udpout:$GCS_HOST:$GCS_PORT --out=udpout:$GCS_HOST:14550 -m --target-system=$SYS_ID $SIM_OPTIONS" \
   --entrypoint "/external/entryPoint.sh" \
-  edrdo/ardupilot-sitl:latest $SYS_ID
+  edrdo/ardupilot-sitl-docker:latest $SYS_ID
 exit $?
