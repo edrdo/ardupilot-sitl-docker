@@ -27,7 +27,7 @@ This script is MacOS specific and should be used when the GCS is running on your
 
 Calling 
 
-    runMAV-macos.sh <System id> <GCS port>` 
+    runMAV-macos.sh <System id> <GCS port>
     
 is shorthand for 
     
