@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.04 as intermediate
 
 WORKDIR /ardupilot
 
@@ -11,9 +11,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install --no-instal
     software-properties-common \
     python-software-properties
 
-RUN apt-get install -y git 
-ENV USER=ardupilot
-RUN cd / && git clone https://github.com/Flytrex/flytrex_ardupilot.git
+RUN apt-get install -y git
+ARG SSH_PRIVATE_KEY
+RUN mkdir ~/.ssh/
+RUN echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+RUN chmod 600 ~/.ssh/id_rsa
+
+RUN touch ~/.ssh/known_hosts
+RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+RUN cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot
+
+FROM ubuntu:16.04
+
+COPY --from=intermediate /ardupilot /srv/ardupilot
 
 RUN echo "ardupilot ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ardupilot
 RUN chmod 0440 /etc/sudoers.d/ardupilot

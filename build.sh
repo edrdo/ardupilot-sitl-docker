@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker build . -t flytrex/flyhawk-sitl-docker:latest
+docker build --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" . -t flytrex/flyhawk-sitl-docker:latest
