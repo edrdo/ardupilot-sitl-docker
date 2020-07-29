@@ -13,7 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install --no-instal
 
 RUN apt-get install -y git 
 ENV USER=ardupilot
-RUN cd / && git clone https://github.com/ArduPilot/ardupilot.git
+RUN cd / && git clone https://github.com/Flytrex/flytrex_ardupilot.git
 
 RUN echo "ardupilot ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ardupilot
 RUN chmod 0440 /etc/sudoers.d/ardupilot

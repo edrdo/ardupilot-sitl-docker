@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker build . -t edrdo/ardupilot-sitl-docker:latest
+docker build . -t Flytrex/flyhawk-sitl-docker:latest
