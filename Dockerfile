@@ -2,16 +2,7 @@ FROM ubuntu:16.04 as intermediate
 
 WORKDIR /ardupilot
 
-RUN useradd -U -d /ardupilot ardupilot && \
-    usermod -G users ardupilot
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install --no-install-recommends -y \
-    lsb-release \
-    sudo \
-    software-properties-common \
-    python-software-properties
-
-RUN apt-get install -y git
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y git
 ARG SSH_PRIVATE_KEY
 RUN mkdir ~/.ssh/
 RUN echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
@@ -21,10 +12,25 @@ RUN touch ~/.ssh/known_hosts
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 RUN cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot
+RUN git checkout Flyhawk
+RUN git config submodule.modules/uavcan.url git@github.com:Flytrex/uavcan.git
+RUN git config submodule.modules/mavlink.url git@github.com:Flytrex/ardupilot_mavlink.git
+RUN git submodule update --init --recursive
 
 FROM ubuntu:16.04
 
-COPY --from=intermediate /ardupilot /srv/ardupilot
+WORKDIR /ardupilot
+
+RUN useradd -U -d /ardupilot ardupilot && \
+    usermod -G users ardupilot
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install --no-install-recommends -y \
+    lsb-release \
+    sudo \
+    software-properties-common \
+    python-software-properties
+
+COPY --from=intermediate /ardupilot /ardupilot
 
 RUN echo "ardupilot ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ardupilot
 RUN chmod 0440 /etc/sudoers.d/ardupilot
@@ -32,7 +38,7 @@ RUN chmod 0440 /etc/sudoers.d/ardupilot
 RUN chown -R ardupilot:ardupilot /ardupilot
 
 USER ardupilot
-RUN /ardupilot/Tools/environment_install/install-prereqs-ubuntu.sh -y
+RUN USER=`whoami` /ardupilot/Tools/environment_install/install-prereqs-ubuntu.sh -y
 RUN sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
