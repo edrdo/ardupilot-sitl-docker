@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker build . -t Flytrex/flyhawk-sitl-docker:latest
+docker build . -t flytrex/flyhawk-sitl-docker:latest
