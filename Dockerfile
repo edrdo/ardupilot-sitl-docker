@@ -47,11 +47,14 @@ RUN sudo apt-get install -y cmake
 WORKDIR /ardupilot
 RUN git clone git://github.com/JSBSim-Team/jsbsim.git 
 
+# temporary only
+RUN sed -i '1i#include <cstdlib>' libraries/AP_Parachute/AP_Parachute.cpp
+
 RUN cd jsbsim && mkdir build && cd build && \
 cmake -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -mtune=native" -DCMAKE_C_FLAGS_RELEASE="-O3 -march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release .. && \
 make -j2 
 
-RUN make sitl
+RUN make sitl-configure copter
 
 ENV CCACHE_MAXSIZE=1G
 ENV PATH /usr/lib/ccache:/ardupilot/Tools:${PATH}
