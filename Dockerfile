@@ -11,8 +11,9 @@ RUN chmod 600 ~/.ssh/id_rsa
 RUN touch ~/.ssh/known_hosts
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
+ARG VERSION
 RUN cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot
-RUN git checkout Flyhawk
+RUN git checkout "${VERSION}"
 RUN git config submodule.modules/uavcan.url git@github.com:Flytrex/uavcan.git
 RUN git config submodule.modules/mavlink.url git@github.com:Flytrex/ardupilot_mavlink.git
 RUN git submodule update --init --recursive
