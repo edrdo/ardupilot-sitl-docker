@@ -8,6 +8,10 @@ fi
 
 SYS_ID=$1
 GCS_HOST=$2
+if [ "$(uname)" == "Darwin" ]
+then  # Mac OS X platform
+  GCS_HOST="docker.for.mac.localhost"
+fi
 GCS_PORT=$3
 if [ $# -eq 4 ]
 then
