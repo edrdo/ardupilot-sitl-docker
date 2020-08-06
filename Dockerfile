@@ -12,11 +12,19 @@ RUN touch ~/.ssh/known_hosts
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 ARG VERSION
-RUN cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot
+ARG USE_HTTPS
+ARG HTTPS_USER
+ARG HTTPS_PASS
+RUN if [ "$USE_HTTPS" = false ]; then cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot; fi
+RUN if [ "$USE_HTTPS" = true ]; then cd / && git clone https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/flytrex_ardupilot.git ardupilot; fi
 RUN git checkout "${VERSION}"
-RUN git config submodule.modules/uavcan.url git@github.com:Flytrex/uavcan.git
-RUN git config submodule.modules/mavlink.url git@github.com:Flytrex/ardupilot_mavlink.git
+RUN if [ "$USE_HTTPS" = false ]; then git config submodule.modules/uavcan.url git@github.com:Flytrex/uavcan.git; fi
+RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/uavcan.url https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/uavcan.git; fi
+RUN if [ "$USE_HTTPS" = false ]; then git config submodule.modules/mavlink.url git@github.com:Flytrex/ardupilot_mavlink.git; fi
+RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/mavlink.url https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/ardupilot_mavlink.git; fi
 RUN git submodule update --init --recursive
+RUN git remote remove origin
+RUN rm -rf .git
 
 FROM ubuntu:16.04
 
