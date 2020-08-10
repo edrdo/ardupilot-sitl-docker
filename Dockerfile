@@ -24,7 +24,9 @@ RUN if [ "$USE_HTTPS" = false ]; then git config submodule.modules/mavlink.url g
 RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/mavlink.url https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/ardupilot_mavlink.git; fi
 RUN git submodule update --init --recursive
 RUN git remote remove origin
-RUN rm -rf .git
+RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/uavcan.url https://github.com/Flytrex/uavcan.git; fi
+RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/mavlink.url https://github.com/Flytrex/ardupilot_mavlink.git; fi
+
 
 FROM ubuntu:16.04
 
@@ -56,8 +58,6 @@ RUN sudo apt-get install -y cmake
 WORKDIR /ardupilot
 RUN git clone git://github.com/JSBSim-Team/jsbsim.git 
 
-# temporary only
-RUN sed -i '1i#include <cstdlib>' libraries/AP_Parachute/AP_Parachute.cpp
 
 RUN cd jsbsim && mkdir build && cd build && \
 cmake -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -mtune=native" -DCMAKE_C_FLAGS_RELEASE="-O3 -march=native -mtune=native" -DCMAKE_BUILD_TYPE=Release .. && \
