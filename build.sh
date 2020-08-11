@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 urlencode() {
     # urlencode <string>
     old_lc_collate=$LC_COLLATE
@@ -45,8 +47,10 @@ then
   read -s -p "Password for git: "
   HTTPS_PASS=$(urlencode "$REPLY")
   echo
-  docker build --no-cache --build-arg VERSION=$VERSION --build-arg USE_HTTPS=true --build-arg HTTPS_USER=$HTTPS_USER --build-arg HTTPS_PASS=$HTTPS_PASS . -t $DOCKER_NAME
+  git ls-remote https://"$HTTPS_USER":"$HTTPS_PASS"@github.com/Flytrex/flytrex_ardupilot.git $VERSION > _git_branch_head.txt
+  docker build --build-arg VERSION=$VERSION --build-arg USE_HTTPS=true --build-arg HTTPS_USER=$HTTPS_USER --build-arg HTTPS_PASS=$HTTPS_PASS . -t $DOCKER_NAME
 else
-  docker build --no-cache --build-arg VERSION=$VERSION --build-arg USE_HTTPS=false --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" . -t $DOCKER_NAME
+  git ls-remote git@github.com:Flytrex/flytrex_ardupilot.git $VERSION  > _git_branch_head.txt
+  docker build --build-arg VERSION=$VERSION --build-arg USE_HTTPS=false --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" . -t $DOCKER_NAME
 fi
 

@@ -15,9 +15,10 @@ ARG VERSION
 ARG USE_HTTPS
 ARG HTTPS_USER
 ARG HTTPS_PASS
-RUN if [ "$USE_HTTPS" = false ]; then cd / && git clone git@github.com:Flytrex/flytrex_ardupilot.git ardupilot; fi
-RUN if [ "$USE_HTTPS" = true ]; then cd / && git clone https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/flytrex_ardupilot.git ardupilot; fi
-RUN git checkout "${VERSION}"
+COPY _git_branch_head.txt .
+RUN cd / && if [ -d ardupilot ]; then rm -Rf ardupilot; fi
+RUN if [ "$USE_HTTPS" = false ]; then cd / && git clone --branch "${VERSION}" --single-branch --depth 1 git@github.com:Flytrex/flytrex_ardupilot.git ardupilot; fi
+RUN if [ "$USE_HTTPS" = true ]; then cd / && git clone --no-checkout --single-branch --depth 1 https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/flytrex_ardupilot.git ardupilot; fi
 RUN if [ "$USE_HTTPS" = false ]; then git config submodule.modules/uavcan.url git@github.com:Flytrex/uavcan.git; fi
 RUN if [ "$USE_HTTPS" = true ]; then git config submodule.modules/uavcan.url https://$HTTPS_USER:$HTTPS_PASS@github.com/Flytrex/uavcan.git; fi
 RUN if [ "$USE_HTTPS" = false ]; then git config submodule.modules/mavlink.url git@github.com:Flytrex/ardupilot_mavlink.git; fi
