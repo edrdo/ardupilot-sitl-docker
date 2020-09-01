@@ -39,7 +39,7 @@ then
   exit 1
 fi
 
-DOCKER_NAME=flytrex/flyhawk-sitl-docker:latest
+DOCKER_NAME=beehive/sitl:${VERSION}
 if [ "$USE_HTTPS" = true ]
 then
   read -p "Username for git: "

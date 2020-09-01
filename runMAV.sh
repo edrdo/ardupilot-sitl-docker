@@ -1,17 +1,22 @@
 #! /bin/bash
 
-if [ $# -lt 3 ] || [ $# -gt 4 ] 
+if [ $# -lt 3 ] || [ $# -gt 5 ] 
 then
-  echo "Usage: runMAV.sh <system_id> <gcs_host> <gcs_port> [<optional_param_file>]"
+  echo "Usage: runMAV.sh <system_id> <gcs_host> <gcs_port> [<Flyhawk_Vx.x] [<optional_param_file>]"
   exit 1
 fi
 
 SYS_ID=$1
 GCS_HOST=$2
 GCS_PORT=$3
-if [ $# -eq 4 ]
+VERSION="Flyhawk"
+if [ $# -ge 4 ]
 then
-  PARAM_FILE="--add-param-file=$4"
+  VERSION="$4"
+fi
+if [ $# -eq 5 ]
+then
+  PARAM_FILE="--add-param-file=$5"
 fi
 SCRIPTS_DIR=$(cd $(dirname $(which $0)); pwd)
 
@@ -25,5 +30,5 @@ docker run --rm -it \
   -e "PARAM_FILE=$PARAM_FILE" \
   -e "SIM_OPTIONS=-m --target-system=$SYS_ID $SIM_OPTIONS" \
   --entrypoint "/external/entryPoint.sh" \
-  flytrex/flyhawk-sitl-docker:latest $SYS_ID
+  beehive/sitl:${VERSION} $SYS_ID
 exit $?
