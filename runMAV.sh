@@ -16,9 +16,14 @@ then
 fi
 if [ $# -eq 5 ]
 then
-  PARAM_FILE="--add-param-file=$5"
+  PARAM_FILES="--add-param-file=/external/$5"
 fi
 SCRIPTS_DIR=$(cd $(dirname $(which $0)); pwd)
+
+if [ -f "flyhawk.parm" ]
+then
+  PARAM_FILES+=" --add-param-file=/external/flyhawk.parm"
+fi
 
 echo "Running SITL simulation ..."
 echo SYS_ID=$SYS_ID GCS_HOST=$2 GCS_PORT=$3
@@ -27,7 +32,7 @@ docker run --rm -it \
   -v $SCRIPTS_DIR:/external \
   -p $GCS_HOST:$GCS_PORT:$GCS_PORT/tcp \
   -e "GCS_PORT=$GCS_PORT" \
-  -e "PARAM_FILE=$PARAM_FILE" \
+  -e "PARAM_FILES=$PARAM_FILES" \
   -e "SIM_OPTIONS=-m --target-system=$SYS_ID $SIM_OPTIONS" \
   --entrypoint "/external/entryPoint.sh" \
   beehive/sitl:${VERSION} $SYS_ID
