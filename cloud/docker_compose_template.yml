@@ -1,0 +1,18 @@
+version: '3'
+services: 
+    sitl-${SITL_PORT}:
+        image: 233256533036.dkr.ecr.us-east-2.amazonaws.com/beehive/sitl:${VERSION}
+        hostname: sitl
+        ports: 
+            - "${SITL_PORT}:${SITL_PORT}"
+        environment: 
+            GCS_PORT: ${SITL_PORT}
+            SIM_OPTIONS: -m --target-system=1 ${SIM_OPTIONS}
+            SITL_PARAMS: "${SITL_PARAMS}"
+        entrypoint: ${ENTRYPOINT}
+        logging: 
+            driver: awslogs
+            options: 
+                awslogs-group: beehive-sitl-staging
+                awslogs-region: us-east-2
+                awslogs-stream-prefix: sitl

@@ -1,0 +1,20 @@
+version: 1
+task_definition:
+    services:
+        sitl-${SITL_PORT}:
+            essential: true
+            cpu_shares: 150
+            mem_limit: "128m"
+
+run_params:
+    service_discovery:
+        container_name: sitl-${SITL_PORT}
+        container_port: ${SITL_PORT}
+        service_discovery_service:
+            name: sitl-${SITL_PORT}
+            description: Flight Controller Software In The Loop
+            dns_config:
+                type: SRV
+                ttl: 60
+            healthcheck_custom_config:
+                failure_threshold: 3
