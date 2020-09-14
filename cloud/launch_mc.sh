@@ -5,6 +5,8 @@ set -x
 
 VPC_DNS_SERVER="10.0.0.2"
 SHARED_PREFS_DIR=/data/data/com.flytrex.onboardng/shared_prefs
+MC_PACKAGE_NAME="com.flytrex.onboardng"
+MC_MAIN_ACTIVITY="ui.MainActivity"
 
 for i in {1..10}
 do
@@ -28,4 +30,5 @@ echo ${SITL_HOSTNAME}:${SITL_PORT}
 sed -i "s/\(<string name=\"drone_sitl_hostname\">\)[0-9A-Z.]*\(<\/string>\)/\1${SITL_HOSTNAME}\2/" ${SHARED_PREFS_DIR}/*.xml
 sed -i "s/\(<string name=\"drone_sitl_port\">\)[0-9]*\(<\/string>\)/\1${SITL_PORT}\2/" ${SHARED_PREFS_DIR}/*.xml
 
-# TODO: launch the mc app
+echo "launching Mission Computer"
+am start -n ${MC_PACKAGE_NAME}/.${MC_MAIN_ACTIVITY}
