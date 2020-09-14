@@ -84,5 +84,5 @@ then
   exit 1
 fi
 
-scp -i ${SSH_KEY_FILE} launch_mc.sh genymotion@${ANDROID_PUBLIC_IP}:/data/local/tmp/launch_mc.sh
-ssh -i ${SSH_KEY_FILE} genymotion@${ANDROID_PUBLIC_IP} "SRV_RECORD=sitl-${SITL_PORT}.beehive_staging sh /data/local/tmp/launch_mc.sh"
+scp -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} launch_mc.sh genymotion@${ANDROID_PUBLIC_IP}:/data/local/tmp/launch_mc.sh
+ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} genymotion@${ANDROID_PUBLIC_IP} "SRV_RECORD=sitl-${SITL_PORT}.beehive_staging sh /data/local/tmp/launch_mc.sh"
