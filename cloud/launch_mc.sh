@@ -1,5 +1,8 @@
 #!/system/bin/sh
 
+set -e
+set -x
+
 VPC_DNS_SERVER="10.0.0.2"
 SHARED_PREFS_DIR=/data/data/com.flytrex.onboardng/shared_prefs
 

@@ -85,4 +85,4 @@ then
 fi
 
 scp -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} launch_mc.sh genymotion@${ANDROID_PUBLIC_IP}:/data/local/tmp/launch_mc.sh
-ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} genymotion@${ANDROID_PUBLIC_IP} "SRV_RECORD=sitl-${SITL_PORT}.beehive_staging su -c 'sh /data/local/tmp/launch_mc.sh'"
+ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} genymotion@${ANDROID_PUBLIC_IP} "su -c \"SRV_RECORD=sitl-${SITL_PORT}.beehive_staging sh /data/local/tmp/launch_mc.sh\""
