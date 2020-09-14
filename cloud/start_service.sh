@@ -54,7 +54,7 @@ ecs-cli compose --project-name "sitl-${SITL_PORT}" \
     --create-log-groups \
     --cluster-config "staging-beehive" \
     --cluster "staging-beehive" \
-    --region "us-east-2" \
+    --region ${AWS_DEFAULT_REGION} \
     --deployment-min-healthy-percent 0 \
     --timeout 5
 
