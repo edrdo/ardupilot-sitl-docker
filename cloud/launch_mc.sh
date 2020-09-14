@@ -27,9 +27,9 @@ fi
 
 echo ${SITL_HOSTNAME}:${SITL_PORT}
 
-sed -i "s/\(<string name=\"drone_sitl_hostname\">\)[0-9A-Z.]*\(<\/string>\)/\1${SITL_HOSTNAME}\2/" ${SHARED_PREFS_DIR}/*.xml
-sed -i "s/\(<string name=\"drone_sitl_port\">\)[0-9]*\(<\/string>\)/\1${SITL_PORT}\2/" ${SHARED_PREFS_DIR}/*.xml
-chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_DIR}/*.xml
+# sed -i "s/\(<string name=\"drone_sitl_hostname\">\)[0-9A-Z.]*\(<\/string>\)/\1${SITL_HOSTNAME}\2/" ${SHARED_PREFS_DIR}/*.xml
+# sed -i "s/\(<string name=\"drone_sitl_port\">\)[0-9]*\(<\/string>\)/\1${SITL_PORT}\2/" ${SHARED_PREFS_DIR}/*.xml
+# chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_DIR}/*.xml
 
-echo "launching Mission Computer"
-am start -n ${MC_PACKAGE_NAME}/.${MC_MAIN_ACTIVITY}
+# echo "launching Mission Computer"
+# am start -n ${MC_PACKAGE_NAME}/.${MC_MAIN_ACTIVITY}
