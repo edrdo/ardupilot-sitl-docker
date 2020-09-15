@@ -28,15 +28,14 @@ fi
 
 echo ${SITL_HOSTNAME}:${SITL_PORT}
 
-# sed -i "s/\(<string name=\"drone_sitl_hostname\">\)[0-9A-Za-z\-_.]*\(<\/string>\)/\1${SITL_HOSTNAME}\2/" ${SHARED_PREFS_DIR}/*.xml
-# sed -i "s/\(<int name=\"drone_sitl_port\" value=\"\)[0-9]*\(\" \/>\)/\1${SITL_PORT}\2/" ${SHARED_PREFS_DIR}/*.xml
 PREFS_TMP_PATH=${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}.tmp
-grep -v -e "drone_sitl_port" -e "drone_use_sitl" -e "drone_sitl_hostname" -e "simulate_ioio" -e "vehicle_id" ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME} > ${PREFS_TMP_PATH}
-echo "<int name=\"drone_sitl_port\" value=\"${SITL_PORT}\" />" >> ${PREFS_TMP_PATH}
-echo "<boolean name=\"drone_use_sitl\" value=\"true\" />" >> ${PREFS_TMP_PATH}
-echo "<string name=\"drone_sitl_hostname\">${SITL_HOSTNAME}</string>" >> ${PREFS_TMP_PATH}
-echo "<boolean name=\"simulate_ioio\" value=\"true\" />" >> ${PREFS_TMP_PATH}
-echo "<int name=\"vehicle_id\" value=\"${VEHICLE_ID}\" />" >> ${PREFS_TMP_PATH}
+grep -v -e "drone_sitl_port" -e "drone_use_sitl" -e "drone_sitl_hostname" -e "simulate_ioio" -e "vehicle_id" -e "</map>" ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME} > ${PREFS_TMP_PATH}
+echo "    <int name=\"drone_sitl_port\" value=\"${SITL_PORT}\" />" >> ${PREFS_TMP_PATH}
+echo "    <boolean name=\"drone_use_sitl\" value=\"true\" />" >> ${PREFS_TMP_PATH}
+echo "    <string name=\"drone_sitl_hostname\">${SITL_HOSTNAME}</string>" >> ${PREFS_TMP_PATH}
+echo "    <boolean name=\"simulate_ioio\" value=\"true\" />" >> ${PREFS_TMP_PATH}
+echo "    <int name=\"vehicle_id\" value=\"${VEHICLE_ID}\" />" >> ${PREFS_TMP_PATH}
+echo "</map>" >> ${PREFS_TMP_PATH}
 cat ${PREFS_TMP_PATH} > ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 rm ${PREFS_TMP_PATH}
 chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
