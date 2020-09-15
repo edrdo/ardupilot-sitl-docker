@@ -6,7 +6,7 @@ set -e
 aws --version
 ecs-cli --version
 
-ANDROID_IMAGE_ID="ami-0f30327a5f05c5f40"
+ANDROID_IMAGE_ID="ami-02d7c6eff157797a0"
 
 export SITL_PORT=5761  # TODO: find a way to get a dynamically aviliable port'
 export SCRIPTS_DIR="$(cd $(dirname $(which $0)); pwd)/../sitl"
