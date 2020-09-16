@@ -84,6 +84,8 @@ then
   exit 1
 fi
 
+aws s3 cp s3://mc-apks.beehive.flytrex.com/${MC_VERSION}.apk ${MC_VERSION}.apk
+scp -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} ${MC_VERSION}.apk genymotion@${ANDROID_PUBLIC_IP}:/data/local/tmp/mc.apk
 scp -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} launch_mc.sh genymotion@${ANDROID_PUBLIC_IP}:/data/local/tmp/launch_mc.sh
 ssh -o StrictHostKeyChecking=no -i ${SSH_KEY_FILE} genymotion@${ANDROID_PUBLIC_IP} \
   "su -c \"VEHICLE_ID=${VEHICLE_ID} SRV_RECORD=sitl-${SITL_PORT}.beehive_staging sh /data/local/tmp/launch_mc.sh\""
