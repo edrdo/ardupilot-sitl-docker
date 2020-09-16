@@ -41,6 +41,6 @@ chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_
 restorecon ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 
 echo "launching Mission Computer"
-am force-stop ${MC_PACKAGE_NAME}
+pm install -r /data/local/tmp/mc.apk
 sync && sleep 5
 am start -n ${MC_PACKAGE_NAME}/.${MC_MAIN_ACTIVITY}
