@@ -40,6 +40,7 @@ cat ${PREFS_TMP_PATH} > ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 rm ${PREFS_TMP_PATH}
 chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 restorecon ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
+sync && sleep 5
 
 echo "launching Mission Computer"
 am start -n ${MC_PACKAGE_NAME}/.${MC_MAIN_ACTIVITY}
