@@ -26,7 +26,7 @@ ANDROID_INSTANCE_ID=$(aws ec2 run-instances \
                         --count 1 \
                         --instance-type t3.medium \
                         --key-name SITL \
-                        --security-group-ids sg-0f92216872a5cb736 \
+                        --security-group-ids sg-09bcd16c1aedccf81 \
                         --subnet-id subnet-00ae21b28457f4d12 \
                         --associate-public-ip-address \
                         --query 'Instances[*].InstanceId' --output text 
