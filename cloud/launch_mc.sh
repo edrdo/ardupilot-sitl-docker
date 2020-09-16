@@ -7,11 +7,10 @@ SHARED_PREFS_DIR=/data/data/com.flytrex.onboardng/shared_prefs
 SHARED_PREFS_FILENAME=com.flytrex.onboardng_prefs.xml
 MC_PACKAGE_NAME="com.flytrex.onboardng"
 MC_MAIN_ACTIVITY="ui.MainActivity"
-VPC_DNS_SERVER=$(getprop net.dns1)
 
 for i in {1..10}
 do
-    RECORD_DATA=$(nslookup -type=SRV ${SRV_RECORD} ${VPC_DNS_SERVER} | grep ${SRV_RECORD})
+    RECORD_DATA=$(nslookup -type=SRV ${SRV_RECORD} $(getprop net.dns1) | grep ${SRV_RECORD})
     SITL_HOSTNAME=$(echo ${RECORD_DATA} | awk '{print $NF}')
     SITL_PORT=$(echo ${RECORD_DATA} | awk '{print $(NF-1)}')
     if [ "${SITL_PORT}" -gt 0 ]
