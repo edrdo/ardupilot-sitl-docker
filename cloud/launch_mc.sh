@@ -38,7 +38,6 @@ echo "    <int name=\"vehicle_id\" value=\"${VEHICLE_ID}\" />" >> ${PREFS_TMP_PA
 echo "</map>" >> ${PREFS_TMP_PATH}
 cat ${PREFS_TMP_PATH} > ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 rm ${PREFS_TMP_PATH}
-rm ${SHARED_PREFS_DIR}/${MC_PACKAGE_NAME}_preferences.xml
 chown $(stat -c '%U:%G' ${SHARED_PREFS_DIR} | tr -d '[:space:]') ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 restorecon ${SHARED_PREFS_DIR}/${SHARED_PREFS_FILENAME}
 
