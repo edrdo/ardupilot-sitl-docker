@@ -8,7 +8,7 @@ ecs-cli --version
 
 ANDROID_IMAGE_ID="ami-02d7c6eff157797a0"
 
-export SITL_PORT=5761  # TODO: find a way to get a dynamically aviliable port'
+export SITL_PORT=5${VEHICLE_ID}  # we assume ${VEHICLE_ID} is exactly 4 digits between 1000-1100
 export SCRIPTS_DIR="$(cd $(dirname $(which $0)); pwd)/../sitl"
 export SIM_OPTIONS=
 
