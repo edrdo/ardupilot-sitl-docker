@@ -26,8 +26,8 @@ ANDROID_INSTANCE_ID=$(aws ec2 run-instances \
                         --count 1 \
                         --instance-type t3.medium \
                         --key-name SITL \
-                        --security-group-ids sg-0f93cd7c418adc50c \
-                        --subnet-id subnet-00ae21b28457f4d12 \
+                        --security-group-ids sg-09bcd16c1aedccf81 \
+                        --subnet-id subnet-07be964d \
                         --associate-public-ip-address \
                         --query 'Instances[*].InstanceId' --output text 
 )
@@ -49,7 +49,7 @@ echo "Launching SITL service"
 ecs-cli compose --project-name "sitl-${SITL_PORT}" \
     service up \
     --private-dns-namespace "beehive_staging" \
-    --vpc "vpc-0af4a153bf51abf0b" \
+    --vpc "vpc-5c17fc35" \
     --enable-service-discovery \
     --create-log-groups \
     --cluster-config "staging-beehive" \
