@@ -3,11 +3,11 @@
 set -e
 set -x
 
-VPC_DNS_SERVER="10.0.0.2"
 SHARED_PREFS_DIR=/data/data/com.flytrex.onboardng/shared_prefs
 SHARED_PREFS_FILENAME=com.flytrex.onboardng_prefs.xml
 MC_PACKAGE_NAME="com.flytrex.onboardng"
 MC_MAIN_ACTIVITY="ui.MainActivity"
+VPC_DNS_SERVER=${getprop net.dns1}
 
 for i in {1..10}
 do
