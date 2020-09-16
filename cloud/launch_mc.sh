@@ -14,13 +14,13 @@ do
     RECORD_DATA=$(nslookup -type=SRV ${SRV_RECORD} ${VPC_DNS_SERVER} | grep ${SRV_RECORD})
     SITL_HOSTNAME=$(echo ${RECORD_DATA} | awk '{print $NF}')
     SITL_PORT=$(echo ${RECORD_DATA} | awk '{print $(NF-1)}')
-    if [ ${SITL_PORT} -gt 0 ]
+    if [ "${SITL_PORT}" -gt 0 ]
     then
         break
     fi
     sleep 1
 done
-if [ ! ${SITL_PORT} -gt 0 ]
+if [ ! "${SITL_PORT}" -gt 0 ]
 then
     echo "can't resolve SRV"
     exit 1
