@@ -3,9 +3,6 @@
 set -x
 set -e
 
-aws --version
-ecs-cli --version
-
 ANDROID_IMAGE_ID="ami-02d7c6eff157797a0"
 
 export SITL_PORT=5${VEHICLE_ID}  # we assume ${VEHICLE_ID} is exactly 4 digits between 1000-1100
@@ -19,6 +16,31 @@ fi
 
 export START_LOCATION=--custom-location=$(awk -F "=" "/${CUSTOM_LOCATION}"'/{print $2}' ${SCRIPTS_DIR}/extra-locations.txt)
 export ENTRYPOINT='bash -c "echo \\"$${SITL_PARAMS}\\" > extra.parm; sim_vehicle.py -N -v ArduCopter --frame=hexa '"${START_LOCATION}"' --add-param-file=extra.parm -w --model hexa --no-mavproxy --sitl-instance-args=\\"-S --base-port '"${SITL_PORT} ${SIM_OPTIONS}"'\\" "'
+
+ANDROID_INSTANCE_ID=''
+
+function cleanup_after_error {
+  RETVAL=$?
+  if [ "${RETVAL}" -eq 0 ]
+  then
+    exit ${RETVAL}
+  fi
+
+  set +e
+
+  if [ -n "${ANDROID_INSTANC_ID}" ]
+  then
+    aws ec2 terminate-instances --instance-ids "${ANDROID_INSTANC_ID}"
+  fi
+
+  if ecs-cli compose --project-name "sitl-${SITL_PORT}" service list --cluster-config "staging-beehive" --cluster "staging-beehive" --region ${AWS_DEFAULT_REGION}
+  then
+    ecs-cli compose --project-name "sitl-${SITL_PORT}" service rm
+  fi
+
+  exit ${RETVAL}
+}
+trap cleanup_after_error ERR
 
 echo "Launching Android instance"
 ANDROID_INSTANCE_ID=$(aws ec2 run-instances \
@@ -60,7 +82,6 @@ ecs-cli compose --project-name "sitl-${SITL_PORT}" \
 
 if [ "$?" = "1" ]; then
   echo "Can't launch SITL"
-  # TODO: terminate Android instance
   exit 1
 fi
 
@@ -80,7 +101,6 @@ done
 if [ -z ${ANDROID_PUBLIC_IP} ]
 then
   echo "Can't get Android public ip"
-  # TODO: terminate Android instance
   exit 1
 fi
 
