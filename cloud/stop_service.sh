@@ -35,4 +35,5 @@ fi
 
 aws ec2 terminate-instances --instance-ids "${ANDROID_INSTANCE_ID}"
 
+aws ecs update-service --cluster "staging-beehive" --service "sitl-${SITL_PORT}" --desired-count 0
 aws ecs delete-service --cluster "staging-beehive" --service "sitl-${SITL_PORT}"
