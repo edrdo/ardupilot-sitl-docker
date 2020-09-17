@@ -41,7 +41,7 @@ trap cleanup_after_error ERR
 echo "Launching Android instance"
 ANDROID_INSTANCE_ID=$(aws ec2 run-instances \
                         --image-id ${ANDROID_IMAGE_ID} \
-                        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=sitl-$\{SITL_PORT\}}]' \
+                        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=sitl-${SITL_PORT}}]" \
                         --count 1 \
                         --instance-type t3.medium \
                         --key-name SITL \
