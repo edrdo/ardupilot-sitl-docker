@@ -21,10 +21,6 @@ ANDROID_INSTANCE_ID=''
 
 function cleanup_after_error {
   RETVAL=$?
-  if [ "${RETVAL}" -eq 0 ]
-  then
-    exit ${RETVAL}
-  fi
 
   set +e
 
