@@ -1,3 +1,2 @@
 #! /bin/bash
-
-docker build . -t edrdo/ardupilot-sitl-docker:latest
+docker build . -t temmiehoihoi/sitl_image:latest

@@ -3,4 +3,4 @@ docker run \
   --rm -h ardupilot-sitl -it \
   --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
-  -u ardupilot edrdo/ardupilot-sitl-docker:latest /bin/bash
+  -u ardupilot temmiehoihoi/sitl_image:latest /bin/bash

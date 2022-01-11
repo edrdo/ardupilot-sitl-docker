@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 WORKDIR /ardupilot
 
@@ -20,8 +20,12 @@ RUN chmod 0440 /etc/sudoers.d/ardupilot
 RUN chown -R ardupilot:ardupilot /ardupilot
 
 USER ardupilot
+RUN sudo add-apt-repository universe
 RUN sudo apt-get update
-RUN sudo apt-get install -y python
-RUN sudo apt-get install -y pip
-RUN pip install future
+RUN sudo apt-get install -y python-pip
+RUN sudo apt-get install -y python3-pip
+RUN pip3 install --upgrade pip
+RUN git submodule update --init --recursive
+RUN python -m pip install future pexpect mavproxy empy
+ENV PATH /ardupilot/jsbsim/build/src:/ardupilot/.local/bin:/ardupilot/Tools/autotest:/usr/lib/ccache:/ardupilot/Tools:/ardupilot/jsbsim/build/src:/ardupilot/.local/bin:/ardupilot/Tools/autotest:/usr/lib/ccache:/ardupilot/Tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN /bin/bash
